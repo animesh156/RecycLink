@@ -4,6 +4,7 @@ const dotenv = require('dotenv').config()
 const port = process.env.PORT
 var cors = require('cors')
 
+// Middleware
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
