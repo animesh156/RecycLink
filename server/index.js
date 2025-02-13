@@ -2,8 +2,10 @@ const express = require('express')
 const app = express()
 const dotenv = require('dotenv').config()
 const port = process.env.PORT
+const cookieParser = require('cookie-parser')
 var cors = require('cors')
 const connectDB = require('./config/db')
+const userRoutes = require('./routes/userRoutes')
 
 
 connectDB()
@@ -11,11 +13,9 @@ connectDB()
 // Middleware
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
 
-app.get('/', (req,res) => {
-    res.json('Recyclink project')
-})
+app.use('/user', userRoutes)   // user route /user/register or login
 
 app.listen(port, () => {
     console.log(`Server started at ${port}`)
