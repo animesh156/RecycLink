@@ -3,6 +3,10 @@ const app = express()
 const dotenv = require('dotenv').config()
 const port = process.env.PORT
 var cors = require('cors')
+const connectDB = require('./config/db')
+
+
+connectDB()
 
 // Middleware
 app.use(cors())
