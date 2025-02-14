@@ -89,9 +89,22 @@ const logoutUser = async (req,res) => {
 }
 
 
+// Check User Status
+const getUserStatus = async (req,res) => {
+    console.log(req.user)
+    const user = await User.find(req.user._id).select("-password");
+    if(user) {
+        res.status(200).json(user)
+    }
+    else {
+        res.status(404).json("User not found")
+    }
+}
+
+
 
 
 
 module.exports = {
-    registerUser, loginUser, logoutUser
+    registerUser, loginUser, logoutUser, getUserStatus
 }
