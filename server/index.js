@@ -12,7 +12,7 @@ connectDB()
 
 // Middleware
 app.use(cors({
-    origin: "http://localhost:5173", // Adjust based on frontend URL
+    origin: "http://localhost:3000", // Adjust based on frontend URL
     credentials: true,
 }))
 app.use(express.json())
