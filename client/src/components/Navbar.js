@@ -34,8 +34,12 @@ const Navbar = () => {
     }
   };
 
+  if(!isAuthenticated){
+    return <></>
+  }
+
   return (
-    <nav className="navbar bg-base-100 shadow-lg px-4">
+    <nav className="navbar sticky top-0 start-0 dark:bg-base-100 bg-slate-200 shadow-lg px-4">
       <ToastContainer />
       <div className="flex-1">
         <Link to="/" className="text-xl font-bold text-primary">
@@ -43,7 +47,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {isAuthenticated ? (
+     
         <div className="flex-none gap-4">
           <Link to="/dashboard" className="btn btn-ghost">
             Dashboard
@@ -55,16 +59,7 @@ const Navbar = () => {
             Logout
           </button>
         </div>
-      ) : (
-        <div className="flex-none gap-4">
-          <Link to="/login" className="btn btn-ghost">
-            Login
-          </Link>
-          <Link to="/register" className="btn btn-primary">
-            Register
-          </Link>
-        </div>
-      )}
+      
     </nav>
   );
 };

@@ -6,11 +6,11 @@ import API from "../utils/api";
 const Login = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    
 
     try {
       const { email, password } = credentials;
@@ -36,26 +36,29 @@ const Login = () => {
         
        
       } else {
-        setError(response.data.message || "Login failed");
+      
         toast.error("Login failed. Please try again.");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      
       toast.error("Login failed. Please check your credentials.");
       console.error("Login error:", err);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center"
+    style={{
+      backgroundImage: 'url("/wave.svg")',
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+    >
       <ToastContainer />
-      <div className="max-w-md w-full bg-white dark:bg-neutral-900 rounded-lg shadow p-8">
+      <div className="max-w-md w-full bg-white  dark:bg-neutral-900 rounded-lg shadow p-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-            {error}
-          </div>
-        )}
+      
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Email</label>
@@ -88,6 +91,21 @@ const Login = () => {
             Login
           </button>
         </form>
+
+
+        <div className="mt-4 text-center">
+          <p className="text-gray-600">
+            New User?{' '}
+            <button
+              onClick={() => navigate('/register')}
+              className="text-blue-500 hover:underline"
+            >
+              SignUp
+            </button>
+          </p>
+        </div>
+
+
       </div>
     </div>
   );

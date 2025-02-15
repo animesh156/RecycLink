@@ -61,10 +61,17 @@ const Register = () => {
  
 
   return (
-    <div className="min-h-screen  flex items-center justify-center">
+    <div className="min-h-screen   flex  items-center justify-center"
+        style={{
+          backgroundImage: 'url("/wave.svg")',
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+    >
       <ToastContainer />
-      <div className="max-w-md w-full bg-white dark:bg-neutral-900 rounded-lg shadow p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Register</h1>
+      <div className="max-w-md  w-full  bg-white dark:bg-neutral-900 rounded-lg shadow p-8">
+        <h1 className="text-3xl font-bold mb-4 text-center">Register</h1>
        
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
