@@ -177,7 +177,7 @@ const AddWaste = () => {
           {/* Image Upload */}
           <div>
             <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
-              Upload Image (Max: 100 KB)
+              Upload Image (Max: 200 KB)
             </label>
             <input
               type="file"
