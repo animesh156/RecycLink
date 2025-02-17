@@ -24,4 +24,12 @@ const protect = async (req, res, next) => {
     }
 };
 
-module.exports = { protect };
+const isSeller = async (req,res,next) => {
+    const user = await User.findById(req.user.id);
+  if (user.role !== "seller") {
+    return res.status(403).json({ message: "Access Denied! Only sellers can perform this action." });
+  }
+  next();
+}
+
+module.exports = { protect, isSeller };

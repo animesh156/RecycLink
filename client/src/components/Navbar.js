@@ -16,7 +16,7 @@ const Navbar = () => {
   // Logout function
   const handleLogout = async () => {
     try {
-      await API.post("/logout", {}, { withCredentials: true });
+      await API.post("/user/logout", {}, { withCredentials: true });
       toast.success("Logged out successfully");
 
       // Remove authentication state
@@ -37,9 +37,9 @@ const Navbar = () => {
   if(!isAuthenticated){
     return <></>
   }
-
+ 
   return (
-    <nav className="navbar sticky top-0 start-0 dark:bg-base-100 bg-slate-200 shadow-lg px-4">
+    <nav className="navbar sticky top-0 start-0  bg-slate-200 dark:bg-neutral-900 shadow-lg px-4">
       <ToastContainer />
       <div className="flex-1">
         <Link to="/" className="text-xl font-bold text-primary">
@@ -49,7 +49,7 @@ const Navbar = () => {
 
      
         <div className="flex-none gap-4">
-          <Link to="/dashboard" className="btn btn-ghost">
+          <Link to="/" className="btn btn-ghost">
             Dashboard
           </Link>
           <Link to="/profile" className="btn btn-ghost">

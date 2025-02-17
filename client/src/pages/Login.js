@@ -7,58 +7,56 @@ const Login = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
 
     try {
       const { email, password } = credentials;
       const response = await API.post(
-        "/login",
+        "/user/login",
         { email, password },
         { withCredentials: true }
       );
+
+      console.log("Full Response:", response); // Log the entire response
+    console.log("Response Data:", response.data); // Log only the data
+
 
       if (response.status === 200) {
         toast.success("Login successful!");
 
         // Store authentication state in local storage
-        localStorage.setItem("isAuthenticated", "true");
-
        
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("role", response.data.role)
 
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/");
           window.location.reload(); // Ensure Navbar updates instantly
         }, 2000);
-
-        
-       
       } else {
-      
         toast.error("Login failed. Please try again.");
       }
     } catch (err) {
-      
       toast.error("Login failed. Please check your credentials.");
       console.error("Login error:", err);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center"
-    style={{
-      backgroundImage: 'url("/wave.svg")',
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: 'url("/wave.svg")',
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <ToastContainer />
-      <div className="max-w-md w-full bg-white  dark:bg-neutral-900 rounded-lg shadow p-8">
+      <div className="max-w-md w-full bg-pink-200  dark:bg-neutral-900 rounded-lg shadow p-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
-      
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Email</label>
@@ -92,20 +90,17 @@ const Login = () => {
           </button>
         </form>
 
-
         <div className="mt-4 text-center">
           <p className="text-gray-600">
-            New User?{' '}
+            New User?{" "}
             <button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate("/register")}
               className="text-blue-500 hover:underline"
             >
               SignUp
             </button>
           </p>
         </div>
-
-
       </div>
     </div>
   );

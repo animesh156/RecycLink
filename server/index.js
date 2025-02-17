@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 var cors = require('cors')
 const connectDB = require('./config/db')
 const userRoutes = require('./routes/userRoutes')
+const wasteRoutes = require('./routes/wasteRoutes')
 
 
 connectDB()
@@ -18,9 +19,10 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/user', userRoutes)   // user route /user/register or login
+app.use('/api/user', userRoutes)   // user route /user/register or login
+app.use('/api/waste', wasteRoutes)
 
 app.listen(port, () => {
     console.log(`Server started at ${port}`)
 })
-
+ 

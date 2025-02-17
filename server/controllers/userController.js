@@ -22,7 +22,9 @@ const generateToken = (res, userId) => {
 // @access Public
 const registerUser = async (req,res) => {
     
-    const {name,email, password} = req.body;
+    const {name,email, password, role} = req.body;
+
+    
 
     if(!name || !email || !password){
         return res.status(400).json({error: "Please provide all required fields"})
@@ -43,7 +45,8 @@ const registerUser = async (req,res) => {
     const user = await User.create({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role
     })
 
     if(user) {
@@ -52,6 +55,7 @@ const registerUser = async (req,res) => {
             Id: user._id,
             name: user.name,
             email: user.email,
+            role: user.role
 
         });
     } else {
@@ -76,6 +80,7 @@ const loginUser = async (req,res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role
     });
    } else {
     return res.status(400).json({error: "Invalid credentials"})
