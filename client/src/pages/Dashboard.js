@@ -1,21 +1,16 @@
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
- 
+
 const Dashboard = () => {
+  const navigate = useNavigate();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const navigate = useNavigate()
-
-
+  useEffect(() => {
+    //  Read authentication state from localStorage
+    const authStatus = localStorage.getItem("isAuthenticated") === "true";
   
-    useEffect(() => {
-      //  Read authentication state from localStorage
-      const authStatus = localStorage.getItem("isAuthenticated") === "true";
-      setIsAuthenticated(authStatus);
-    }, []);
-  
-  // if user is not logged in navigate it to login page
-    if(!isAuthenticated) navigate('/login')
+    // if user is not logged in navigate it to login page
+    if (!authStatus) navigate("/login");
+  }, []);
 
   return (
     <div className="min-h-screen dark:bg-neutral-800 bg-gray-50 p-8">

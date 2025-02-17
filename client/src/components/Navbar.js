@@ -21,6 +21,7 @@ const Navbar = () => {
 
       // Remove authentication state
       localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("token");
 
      
       setTimeout(() => {
