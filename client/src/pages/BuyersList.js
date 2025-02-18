@@ -1,102 +1,176 @@
 import React, { useState, useEffect } from "react";
 import API from "../utils/api";
-import {ToastContainer, toast} from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify';
+import { motion, AnimatePresence } from "framer-motion";
 
 const BuyersList = () => {
   const [buyersData, setBuyersData] = useState([]);
- 
 
   useEffect(() => {
     const fetchBuyersList = async () => {
       try {
         const response = await API.get("/buyer/list", { withCredentials: true });
-        console.log(response.data); // Debugging: Check API response
-
         setBuyersData(response.data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
 
     fetchBuyersList();
   }, []);
 
-  // Handle Accept or Reject action
-  const handleAction = async (wasteId, buyerId, action,price) => {
+  const handleAction = async (wasteId, buyerId, action, price) => {
     try {
-       await API.put(
+      await API.put(
         `/buyer/accept-or-reject/${wasteId}`,
-        { buyerId, action,price },
+        { buyerId, action, price },
         { withCredentials: true }
       );
 
-     
-      // If accepted, remove the entire waste item
       if (action === "accept") {
         setBuyersData(buyersData.filter((waste) => waste._id !== wasteId));
-        toast.success("accepeted")
+        toast.success("Accepted successfully!");
       } else {
-        // If rejected, remove only the buyer from the list
-        
         setBuyersData((prevData) =>
           prevData.map((waste) => ({
             ...waste,
             buyers: waste.buyers.filter((buyer) => buyer.buyerId._id !== buyerId),
           }))
         );
-        toast.info("Rejected")
+        toast.info("Buyer rejected");
       }
     } catch (error) {
       toast.error("Error processing the action.");
     }
   };
 
+  const containerAnimation = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemAnimation = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
+
   return (
-    <div className="buyers-list h-screen p-4">
+    <div className="min-h-screen bg-white p-6 relative">
+      <div className="absolute inset-0 w-full h-full opacity-5">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path
+                d="M 30 0 L 0 0 0 30"
+                fill="none"
+                stroke="rgba(37, 99, 235, 0.5)"
+                strokeWidth="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
 
       <ToastContainer />
-      <h3 className="text-xl font-semibold mb-4 text-center">Buyers List</h3>
+      
+      <motion.h1 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold mb-8 text-center text-blue-900"
+      >
+        Interested Buyers
+      </motion.h1>
+
       {buyersData.length === 0 ? (
-        <p className="text-center">No buyers available.</p>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center text-blue-800 text-lg"
+        >
+          No buyers available at the moment.
+        </motion.p>
       ) : (
-        <ul className="space-y-4">
+        <motion.ul
+          variants={containerAnimation}
+          initial="hidden"
+          animate="visible"
+          className="space-y-6 max-w-4xl mx-auto"
+        >
           {buyersData.map((waste) => (
-            <li key={waste._id} className="border justify-evenly p-4 rounded-lg shadow-md flex gap-4">
-              {/* Waste Image */}
-              <img
-                src={waste.imageUrl}
-                alt={waste.title}
-                className="w-24 h-24 object-cover rounded-md"
-              />
-              <div>
-                <strong>Waste Item:</strong> {waste.title} <br />
-                <strong>Price:</strong> ${waste.price} <br />
-                <strong>Interested Buyers:</strong>
-                <ul className="mt-2 list-disc pl-4">
-                  {waste.buyers.map((buyer) => (
-                    <li key={buyer.buyerId._id} className="mb-2">
-                      {buyer.buyerId.name} - Offered: ${buyer.amount}
-                      <div className="mt-2 space-x-2">
-                        <button
-                          onClick={() => handleAction(waste._id, buyer.buyerId._id, "accept",waste.price)}
-                          className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
-                        >
-                          Accept
-                        </button>
-                        <button
-                          onClick={() => handleAction(waste._id, buyer.buyerId._id, "reject")}
-                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                        >
-                          Reject
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+            <motion.li
+              key={waste._id}
+              variants={itemAnimation}
+              className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 p-6 rounded-xl shadow-xl border border-blue-300/30 flex flex-col md:flex-row gap-6"
+            >
+              <div className="flex-shrink-0">
+                <img
+                  src={waste.imageUrl}
+                  alt={waste.title}
+                  className="w-32 h-32 object-cover rounded-lg border-2 border-blue-300 shadow-lg"
+                />
               </div>
-            </li>
+              
+              <div className="flex-grow text-white">
+                <h3 className="text-xl font-bold text-blue-300 mb-2">{waste.title}</h3>
+                <p className="text-lg mb-2">
+                  Price: <span className="text-blue-300 font-semibold">${waste.price}</span>
+                </p>
+                
+                <div className="mt-4">
+                  <h4 className="text-lg font-semibold text-blue-200 mb-2">Interested Buyers:</h4>
+                  <ul className="space-y-4">
+                    {waste.buyers.map((buyer) => (
+                      <li key={buyer.buyerId._id} className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+                        <div className="flex justify-between items-center flex-wrap gap-4">
+                          <div>
+                            <p className="text-lg font-medium">{buyer.buyerId.name}</p>
+                            <p className="text-blue-300">
+                              Offered: <span className="font-bold">${buyer.amount}</span>
+                            </p>
+                          </div>
+                          
+                          <div className="flex gap-3">
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleAction(waste._id, buyer.buyerId._id, "accept", waste.price)}
+                              className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg transition-colors duration-200"
+                            >
+                              Accept
+                            </motion.button>
+                            
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleAction(waste._id, buyer.buyerId._id, "reject")}
+                              className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-colors duration-200"
+                            >
+                              Reject
+                            </motion.button>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       )}
     </div>
   );

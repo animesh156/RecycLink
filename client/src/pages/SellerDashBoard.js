@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "../utils/api";
 import IncomeChart from "../pages/IncomeChart";
-import { motion } from "framer-motion";  // Import motion
+import { motion, AnimatePresence } from "framer-motion";
 
 const SellerDashboard = () => {
   const [totalEarnings, setTotalEarnings] = useState(0);
@@ -10,10 +10,87 @@ const SellerDashboard = () => {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "Guest";
 
-  const cardAnimation = {
-    hidden: { x: -200, opacity: 0 }, // Start off-screen to the left and invisible
-    visible: { x: 0, opacity: 1 },   // Move into view and become visible
+  const titleAnimation = {
+    hidden: { y: -20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
   };
+
+  const containerAnimation = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const cardAnimation = {
+    hidden: { 
+      y: 50,
+      opacity: 0,
+      scale: 0.9
+    },
+    visible: { 
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    },
+    hover: {
+      scale: 1.02,
+      y: -5,
+      transition: {
+        type: "spring",
+        stiffness: 300
+      }
+    }
+  };
+
+  const AnimatedBackground = () => (
+    <svg
+      className="absolute inset-0 w-full h-full opacity-5"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <pattern
+          id="grid"
+          width="30"
+          height="30"
+          patternUnits="userSpaceOnUse"
+        >
+          <motion.path
+            d="M 30 0 L 0 0 0 30"
+            fill="none"
+            stroke="rgba(37, 99, 235, 0.5)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            animate={{ 
+              pathLength: 1,
+              transition: { 
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "linear"
+              }
+            }}
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+  );
 
   useEffect(() => {
     const fetchEarnings = async () => {
@@ -21,7 +98,7 @@ const SellerDashboard = () => {
         const response = await API.get("/total-earnings", { withCredentials: true });
         const earnings = response.data || 0;
         setTotalEarnings(earnings);
-        setRecycledAmount(earnings * (1 / 50)); // Adjust recycling logic if needed
+        setRecycledAmount(earnings * (1 / 50));
       } catch (error) {
         console.error("Error fetching total earnings:", error);
       }
@@ -31,78 +108,100 @@ const SellerDashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-6">
-      <h1 className="text-3xl font-semibold text-center mb-6">Welcome, {userName.toUpperCase()}</h1>
-      <IncomeChart />
-
-      <div className="flex flex-wrap gap-y-3 gap-x-2 md:gap-x-6 mt-8 justify-center">
-        {/* Animate cards with Framer Motion */}
+    <AnimatePresence>
+      <div className="min-h-screen bg-white p-6 relative overflow-hidden flex flex-col justify-center">
+        <AnimatedBackground />
         
-        <motion.div
+        <motion.h1 
           initial="hidden"
           animate="visible"
-          variants={cardAnimation}
-          transition={{ duration: 0.5 }}
-          className="card dark:bg-neutral-900 w-96 shadow-xl"
+          variants={titleAnimation}
+          className="text-center text-4xl mb-16 text-blue-900 font-light tracking-wide relative z-10"
         >
-          <div className="card-body">
-            <h2 className="card-title dark:text-sky-600">Buyers List</h2>
-            <p>View and manage buyers interested in your waste listings.</p>
-            <div className="card-actions justify-end">
-              <button
-                className="btn dark:bg-pink-500 dark:hover:bg-pink-600 dark:text-black"
-                onClick={() => navigate('/buyers-list')}
-              >
-                Show List
-              </button>
-            </div>
-          </div>
-        </motion.div>
+          Welcome back, {' '}
+          <motion.span 
+            className="text-blue-600 font-bold uppercase"
+            whileHover={{ scale: 1.05 }}
+          >
+            {userName}
+          </motion.span>
+        </motion.h1>
 
-        <motion.div
+        <div className="relative z-10 mb-8">
+          <IncomeChart />
+        </div>
+
+        <motion.div 
+          variants={containerAnimation}
           initial="hidden"
           animate="visible"
-          variants={cardAnimation}
-          transition={{ duration: 0.5, delay: 0.2 }}  // Slight delay for the second card
-          className="card dark:bg-neutral-900 w-96 shadow-xl"
+          className="flex flex-wrap gap-8 justify-center items-center max-w-7xl mx-auto relative z-10"
         >
-          <div className="card-body">
-            <h2 className="card-title dark:text-sky-600">Add Item</h2>
-            <p>Sell your waste by adding a new listing.</p>
-            <div className="card-actions justify-end">
-              <button
-                className="btn dark:bg-pink-500 dark:hover:bg-pink-600 dark:text-black"
-                onClick={() => navigate('/add-waste')}
-              >
-                Add Now
-              </button>
+          <motion.div
+            variants={cardAnimation}
+            whileHover="hover"
+            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+          >
+            <div className="card-body p-8 flex flex-col h-full">
+              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Buyers List</h2>
+              <p className="text-gray-100 mb-6 text-lg text-center">View and manage buyers interested in your waste listings</p>
+              <div className="card-actions justify-center mt-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
+                  onClick={() => navigate('/buyers-list')}
+                >
+                  Show List
+                </motion.button>
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={cardAnimation}
-          transition={{ duration: 0.5, delay: 0.4 }}  // Slight delay for the third card
-          className="card dark:bg-neutral-900 w-96 shadow-xl"
-        >
-          <div className="card-body">
-            <h2 className="card-title dark:text-sky-600">Recycle Insights</h2>
-            <p>Track your recycling progress and impact!</p>
-            <div className="card-actions justify-end">
-              <button
-                className="btn dark:bg-pink-500 dark:hover:bg-pink-600 dark:text-black"
-                onClick={() => navigate('/recycle-insights', { state: { totalEarnings, recycledAmount } })}
-              >
-                Show Insights
-              </button>
+          <motion.div
+            variants={cardAnimation}
+            whileHover="hover"
+            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+          >
+            <div className="card-body p-8 flex flex-col h-full">
+              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Add Item</h2>
+              <p className="text-gray-100 mb-6 text-lg text-center">Sell your waste by adding a new listing</p>
+              <div className="card-actions justify-center mt-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
+                  onClick={() => navigate('/add-waste')}
+                >
+                  Add Now
+                </motion.button>
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
+          <motion.div
+            variants={cardAnimation}
+            whileHover="hover"
+            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+          >
+            <div className="card-body p-8 flex flex-col h-full">
+              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Recycle Insights</h2>
+              <p className="text-gray-100 mb-6 text-lg text-center">Track your recycling progress and impact!</p>
+              <div className="card-actions justify-center mt-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
+                  onClick={() => navigate('/recycle-insights', { state: { totalEarnings, recycledAmount } })}
+                >
+                  Show Insights
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 };
 

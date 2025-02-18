@@ -1,38 +1,109 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from "framer-motion";
 import API from '../utils/api';
-import { motion } from "framer-motion";
-
-const user = localStorage.getItem("userName");
 
 function BuyerDashBoard() {
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [recycledAmount, setRecycledAmount] = useState(0);
-
-  const cardAnimation = {
-    hidden: { x: -200, opacity: 0 }, // Start off-screen to the left and invisible
-    visible: { x: 0, opacity: 1 },   // Move into view and become visible
-  };
+  const [isLoading, setIsLoading] = useState(true);
+  const user = localStorage.getItem("userName");
 
   const navigate = useNavigate();
+
+  const titleAnimation = {
+    hidden: { y: -20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  const containerAnimation = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const cardAnimation = {
+    hidden: { 
+      y: 50,
+      opacity: 0,
+      scale: 0.9
+    },
+    visible: { 
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    },
+    hover: {
+      scale: 1.02,
+      y: -5,
+      transition: {
+        type: "spring",
+        stiffness: 300
+      }
+    }
+  };
+
+  const AnimatedBackground = () => (
+    <svg
+      className="absolute inset-0 w-full h-full opacity-5"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <pattern
+          id="grid"
+          width="30"
+          height="30"
+          patternUnits="userSpaceOnUse"
+        >
+          <motion.path
+            d="M 30 0 L 0 0 0 30"
+            fill="none"
+            stroke="rgba(37, 99, 235, 0.5)"
+            strokeWidth="1"
+            initial={{ pathLength: 0 }}
+            animate={{ 
+              pathLength: 1,
+              transition: { 
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "linear"
+              }
+            }}
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+  );
 
   useEffect(() => {
     const fetchEarnings = async () => {
       try {
         const response = await API.get("/buyer/history", { withCredentials: true });
-        console.log(response.data.purchasedItems);
-
-        // Summing up all prices from the purchasedItems array
         const total = response.data.purchasedItems.reduce((acc, item) => acc + item.price, 0);
-
-        // Setting total earnings
         setTotalEarnings(total);
-
-        // Calculating the recycledAmount based on the earnings (adjust logic if needed)
-        setRecycledAmount(total * (1 / 50)); // Adjust the divisor for your desired formula
-
+        setRecycledAmount(total * (1 / 50));
       } catch (error) {
         console.error("Error fetching total earnings:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -40,57 +111,77 @@ function BuyerDashBoard() {
   }, []);
 
   return (
-    <div className="h-screen">
-      <h1 className="text-center text-2xl mt-8">
-        Welcome, <span className="uppercase text-sky-400 font-bold">{user}</span>
-      </h1>
-
-      <div className="flex flex-wrap gap-y-3 gap-x-2 md:gap-x-6 md:mt-28 mt-8 justify-center">
-        {/* Animate cards with Framer Motion */}
-        <motion.div
+    <AnimatePresence>
+      <div className="min-h-screen bg-white p-6 relative overflow-hidden flex flex-col justify-center">
+        <AnimatedBackground />
+        
+        <motion.h1 
           initial="hidden"
           animate="visible"
-          variants={cardAnimation}
-          transition={{ duration: 0.5 }}
-          className="card dark:bg-neutral-900 w-96 shadow-xl"
+          variants={titleAnimation}
+          className="text-center text-4xl mb-16 text-blue-900 font-light tracking-wide relative z-10"
         >
-          <div className="card-body">
-            <h2 className="card-title dark:text-sky-600">Purchased Items</h2>
-            <p>View your purchased items</p>
+          Welcome back, {' '}
+          <motion.span 
+            className="text-blue-600 font-bold uppercase"
+            whileHover={{ scale: 1.05 }}
+          >
+            {user}
+          </motion.span>
+        </motion.h1>
 
-            <div className="card-actions justify-end">
-              <button
-                className="btn dark:bg-pink-500 dark:text-black dark:hover:bg-pink-600"
-                onClick={() => navigate('/history')}
-              >
-                Show List
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
+        <motion.div 
+          variants={containerAnimation}
           initial="hidden"
           animate="visible"
-          variants={cardAnimation}
-          transition={{ duration: 0.5, delay: 0.2 }}  // Slight delay for the second card
-          className="card dark:bg-neutral-900 w-96 shadow-xl"
+          className="flex flex-wrap gap-8 justify-center items-center max-w-7xl mx-auto relative z-10"
         >
-          <div className="card-body">
-            <h2 className="card-title dark:text-sky-600">Recycle Insights</h2>
-            <p>Track your recycling progress and impact!</p>
-            <div className="card-actions justify-end">
-              <button
-                className="btn dark:bg-pink-500 dark:hover:bg-pink-600 dark:text-black"
-                onClick={() => navigate('/recycle-insights', { state: { totalEarnings, recycledAmount } })}
-              >
-                Show Insights
-              </button>
+          <motion.div
+            variants={cardAnimation}
+            whileHover="hover"
+            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+          >
+            <div className="card-body p-8 flex flex-col h-full">
+              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Purchased Items</h2>
+              <p className="text-gray-100 mb-6 text-lg text-center">Track and manage your recycling journey</p>
+              <div className="card-actions justify-center mt-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
+                  onClick={() => navigate('/history')}
+                >
+                  View History
+                </motion.button>
+              </div>
             </div>
-          </div>
+          </motion.div>
+
+          <motion.div
+            variants={cardAnimation}
+            whileHover="hover"
+            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+          >
+            <div className="card-body p-8 flex flex-col h-full">
+              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Recycle Insights</h2>
+              <p className="text-gray-100 mb-6 text-lg text-center">Discover your environmental impact</p>
+              <div className="card-actions justify-center mt-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
+                  onClick={() => navigate('/recycle-insights', { 
+                    state: { totalEarnings, recycledAmount } 
+                  })}
+                >
+                  View Insights
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }
 

@@ -2,27 +2,23 @@ import { useEffect, useState } from "react";
 import API from '../utils/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Marketplace() {
     const [wastes, setWastes] = useState([]);
     const navigate = useNavigate();
-
     const UserRole = localStorage.getItem("role");
 
     useEffect(() => {
         if (UserRole === "seller") {
-            // Show the error toast first, then redirect after a short delay
             toast.info("Only buyers can access the marketplace.");
-            
-            // Redirect after the toast has been displayed
             setTimeout(() => {
-                navigate("/"); // Redirect to homepage or wherever
-            }, 1000); // 3 seconds delay to allow the toast to show
+                navigate("/");
+            }, 1000);
         }
     }, [UserRole, navigate]);
 
     useEffect(() => {
-        // Fetch the waste data
         const fetchWastes = async () => {
             try {
                 const response = await API.get('/waste', { withCredentials: true });
@@ -39,7 +35,7 @@ function Marketplace() {
     }, [UserRole]);
 
     const handleBidSubmit = async (wasteId, price) => {
-        const amount = price; // Automatically use the waste price as the bid amount
+        const amount = price;
         if (!amount || amount <= 0) {
             toast.error("Invalid bid amount.");
             return;
@@ -54,39 +50,56 @@ function Marketplace() {
         }
     };
 
-    // If UserRole is "seller", don't render the marketplace
     if (UserRole === "seller") return null;
 
     return (
-        <div className=" mx-auto p-6">
+        <div className="min-h-screen bg-white mx-auto p-6">
             <ToastContainer />
-            <h2 className="text-3xl font-bold mb-6 text-center">Waste Marketplace</h2>
+            <motion.h2 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl font-bold mb-6 text-center text-blue-900"
+            >
+                Waste Marketplace
+            </motion.h2>
             {wastes.length === 0 ? (
-                <p className="text-center font-semibold">No Items Available</p>
+                <p className="text-center font-semibold text-blue-900">No Items Available</p>
             ) : (
-                <div className="flex gap-x-3 gap-y-2 flex-wrap justify-evenly">
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex gap-x-3 gap-y-2 flex-wrap justify-evenly"
+                >
                     {wastes.map((waste) => (
-                        <div key={waste._id} className="card dark:bg-neutral-900 p-4 w-96 shadow-xl">
+                        <motion.div 
+                            key={waste._id} 
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            whileHover={{ scale: 1.02 }}
+                            className="card bg-white w-96 shadow-xl border border-blue-100 rounded-xl overflow-hidden"
+                        >
                             <img 
                                 src={waste.imageUrl} 
                                 alt={waste.title} 
-                                className="w-full h-48 object-cover rounded-lg mb-4" 
+                                className="w-full h-48 object-cover rounded-t-lg" 
                             />
-                            <h3 className="text-xl font-bold">{waste.title}</h3>
-                            <p>{waste.description}</p>
-                            <p className="font-semibold text-gray-700">{waste.category}</p>
-                            <p className="font-bold text-red-600">${waste.price}</p>
-                            <div className="flex flex-col mt-4">
-                                <button
-                                    onClick={() => handleBidSubmit(waste._id, waste.price)} // Pass price as bid amount
-                                    className="px-6 py-3 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 active:scale-95 transition-all duration-200"
+                            <div className="p-6">
+                                <h3 className="text-xl font-bold text-blue-900 mb-2">{waste.title}</h3>
+                                <p className="text-gray-600 mb-2">{waste.description}</p>
+                                <p className="font-semibold text-blue-600 mb-1">{waste.category}</p>
+                                <p className="font-bold text-blue-900 text-xl mb-4">${waste.price}</p>
+                                <motion.button
+                                    whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={() => handleBidSubmit(waste._id, waste.price)}
+                                    className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-200 shadow-lg"
                                 >
                                     Buy Now
-                                </button>
+                                </motion.button>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             )}
         </div>
     );

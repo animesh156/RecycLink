@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../utils/api";
 import { ToastContainer, toast } from "react-toastify";
+import { motion } from "framer-motion";
 import axios from "axios";
 
 const AddWaste = () => {
@@ -26,23 +27,15 @@ const AddWaste = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-  
-    // Check if the file size is less than or equal to 200 KB
-    
-  if (file) {
-    
-    if (file.size > 200 * 1024) { // 200 KB
-      toast.error("Image size must be less than 200 KB");
-      setFormData({ ...formData, image: null });
-    } else {
-      console.log("File selected:", file);
-      setFormData({ ...formData, image: file });
+    if (file) {
+      if (file.size > 200 * 1024) {
+        toast.error("Image size must be less than 200 KB");
+        setFormData({ ...formData, image: null });
+      } else {
+        setFormData({ ...formData, image: file });
+      }
     }
-  } else {
-    console.log("No file selected");
-  }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,26 +46,17 @@ const AddWaste = () => {
     }
   
     try {
-      // Create FormData to upload image to Cloudinary
       const imageData = new FormData();
       imageData.append("file", formData.image);
-      imageData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Ensure preset name is correct
+      imageData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
   
-     // Log FormData content
-     for (let pair of imageData.entries()) {
-      console.log(pair[0]+ ': ' + pair[1]);
-    }
-  
-      // Upload the image to Cloudinary
       const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
         imageData
       );
   
-      // If successful, get the image URL
       const imageUrl = cloudinaryResponse.data.secure_url;
   
-      // Proceed with saving waste data to your backend
       const response = await API.post(
         "/waste/add",
         { ...formData, imageUrl },
@@ -82,8 +66,8 @@ const AddWaste = () => {
       if (response.status === 201) {
         toast.success("Waste added successfully!");
         setTimeout(() => {
-          navigate("/");  // Redirect after success
-          window.location.reload();  // Optionally reload page
+          navigate("/");
+          window.location.reload();
         }, 2000);
       }
     } catch (err) {
@@ -91,118 +75,144 @@ const AddWaste = () => {
       console.error("Error:", err);
     }
   };
-  
-
 
   if (UserRole !== "seller") return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center   p-4">
-      <ToastContainer />
-      <div className="w-full max-w-lg bg-white dark:bg-neutral-900 rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">
-          Add Waste
-        </h1>
+    <div className="min-h-screen bg-white flex items-center justify-center p-6 relative">
+      <div className="absolute inset-0 w-full h-full opacity-5">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path
+                d="M 30 0 L 0 0 0 30"
+                fill="none"
+                stroke="rgba(37, 99, 235, 0.5)"
+                strokeWidth="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title */}
+      <ToastContainer />
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-2xl bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 rounded-2xl shadow-2xl p-8 relative z-10 border border-blue-300/30"
+      >
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-3xl font-bold text-center text-white mb-8"
+        >
+          Add New Item
+        </motion.h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
+            <label className="block text-blue-200 text-lg mb-2 font-medium">
               Title
             </label>
-            <input
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
               type="text"
-              className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full p-3 bg-white/10 border border-blue-300/30 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
               placeholder="Enter waste title"
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               required
             />
           </div>
 
-          {/* Description */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
+            <label className="block text-blue-200 text-lg mb-2 font-medium">
               Description
             </label>
-            <textarea
-              className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            <motion.textarea
+              whileFocus={{ scale: 1.01 }}
+              className="w-full p-3 bg-white/10 border border-blue-300/30 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
               placeholder="Describe the waste"
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               required
-            ></textarea>
-          </div>
-
-          {/* Location */}
-          <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
-              Location
-            </label>
-            <input
-              type="text"
-              className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="Enter location"
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              required
+              rows="4"
             />
           </div>
 
-          {/* Category */}
-          <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
-              Category
-            </label>
-            <input
-              type="text"
-              className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="Waste category"
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-blue-200 text-lg mb-2 font-medium">
+                Location
+              </label>
+              <motion.input
+                whileFocus={{ scale: 1.01 }}
+                type="text"
+                className="w-full p-3 bg-white/10 border border-blue-300/30 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+                placeholder="Enter location"
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-blue-200 text-lg mb-2 font-medium">
+                Category
+              </label>
+              <motion.input
+                whileFocus={{ scale: 1.01 }}
+                type="text"
+                className="w-full p-3 bg-white/10 border border-blue-300/30 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+                placeholder="Waste category"
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                required
+              />
+            </div>
           </div>
 
-          {/* Price */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
+            <label className="block text-blue-200 text-lg mb-2 font-medium">
               Price
             </label>
-            <input
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
               type="number"
-              className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="w-full p-3 bg-white/10 border border-blue-300/30 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
               placeholder="Enter price"
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               required
             />
           </div>
 
-          {/* Image Upload */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">
+            <label className="block text-blue-200 text-lg mb-2 font-medium">
               Upload Image (Max: 200 KB)
             </label>
-            <input
+            <motion.input
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              className="block w-full text-sm text-gray-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-md file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-500 file:text-white
-                        hover:file:bg-blue-600
-                        cursor-pointer"
+              className="block w-full text-blue-200
+                      file:mr-4 file:py-3 file:px-4
+                      file:rounded-lg file:border file:border-blue-300/30
+                      file:text-sm file:font-semibold
+                      file:bg-blue-600 file:text-white
+                      hover:file:bg-blue-700
+                      cursor-pointer bg-white/10 rounded-lg"
               required
             />
           </div>
 
-          {/* Submit Button */}
-          <button
+          <motion.button
             type="submit"
-            className="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600 transition"
+            whileHover={{ scale: 1.02, backgroundColor: '#2563EB' }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-200 shadow-lg mt-8"
           >
-            Add Waste
-          </button>
+            Add Item
+          </motion.button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };
