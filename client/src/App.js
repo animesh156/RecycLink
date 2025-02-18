@@ -9,8 +9,12 @@ import Profile from "./pages/Profile";
 import NotFound from './pages/NotFound'
 import AddWaste from './pages/AddWaste'
 import MarketPlace from './pages/Marketplace'
+import SellerDashboard from './pages/SellerDashBoard'
+import BuyersList from './pages/BuyersList'
 
 import "./App.css";
+import RecyclingContribution from "./pages/RecyclingContribution";
+import PurchasedItems from "./pages/PurchasedItems";
 
 const App = () => {
   return (
@@ -24,6 +28,11 @@ const App = () => {
         <Route path="/marketplace" element={<MarketPlace />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/seller" element={<SellerDashboard />} />
+        <Route path="/recycle-insights" element={<RecyclingContribution />} />
+        <Route path="/buyers-list" element={<BuyersList />} />
+        <Route path="/add-waste" element={<AddWaste />} />
+        <Route path="/history" element={<PurchasedItems />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

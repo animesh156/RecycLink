@@ -18,8 +18,7 @@ const Login = () => {
         { withCredentials: true }
       );
 
-      console.log("Full Response:", response); // Log the entire response
-    console.log("Response Data:", response.data); // Log only the data
+     ; // Log only the data
 
 
       if (response.status === 200) {
@@ -28,7 +27,8 @@ const Login = () => {
         // Store authentication state in local storage
        
         localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("role", response.data.role)
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("userName", response.data.name)
 
         setTimeout(() => {
           navigate("/");

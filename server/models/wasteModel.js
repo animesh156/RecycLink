@@ -30,7 +30,14 @@ const WasteSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    bids: [{ buyer: String, amount: Number, timestamp: Date }],
+    buyers: [
+      {
+        // buyerName: { type: String, required: true }, // Name of the buyer
+        buyerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the buyer
+        amount: { type: Number, required: true }, // The amount offered by the buyer
+        timestamp: { type: Date, default: Date.now }, // Time when the buyer showed interest
+      }
+    ],
   },
   {
     timestamps: true,

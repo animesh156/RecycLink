@@ -56,7 +56,7 @@ const AddWaste = () => {
       // Create FormData to upload image to Cloudinary
       const imageData = new FormData();
       imageData.append("file", formData.image);
-      imageData.append("upload_preset", "waste_preset"); // Ensure preset name is correct
+      imageData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Ensure preset name is correct
   
      // Log FormData content
      for (let pair of imageData.entries()) {
@@ -65,7 +65,7 @@ const AddWaste = () => {
   
       // Upload the image to Cloudinary
       const cloudinaryResponse = await axios.post(
-        "https://api.cloudinary.com/v1_1/dxs9k4z6y/image/upload",
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
         imageData
       );
   
@@ -97,7 +97,7 @@ const AddWaste = () => {
   if (UserRole !== "seller") return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+    <div className="min-h-screen flex items-center justify-center   p-4">
       <ToastContainer />
       <div className="w-full max-w-lg bg-white dark:bg-neutral-900 rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">
@@ -197,7 +197,7 @@ const AddWaste = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-600 transition"
+            className="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600 transition"
           >
             Add Waste
           </button>
