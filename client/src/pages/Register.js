@@ -35,7 +35,8 @@ const Register = () => {
 
         // Store authentication state in local storage
         localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("role", response.data.role)
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("userName", response.data.name)
 
         setTimeout(() => {
           navigate("/");

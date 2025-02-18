@@ -21,6 +21,8 @@ const Navbar = () => {
 
       // Remove authentication state
       localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("role")
+      localStorage.removeItem("userName")
 
      
       setTimeout(() => {
@@ -34,12 +36,14 @@ const Navbar = () => {
     }
   };
 
+  const role = localStorage.getItem("role");
+
   if(!isAuthenticated){
     return <></>
   }
  
   return (
-    <nav className="navbar sticky top-0 start-0  bg-slate-200 dark:bg-neutral-900 shadow-lg px-4">
+    <nav className="navbar top-0 start-0  bg-slate-200 dark:bg-neutral-900 shadow-lg px-4">
       <ToastContainer />
       <div className="flex-1">
         <Link to="/" className="text-xl font-bold text-primary">
@@ -52,12 +56,13 @@ const Navbar = () => {
           <Link to="/" className="btn btn-ghost">
             Dashboard
           </Link>
-          <Link to="/marketplace" className="btn btn-ghost">
-            Marketplace
-          </Link>
-          <Link to="/add-waste" className="btn btn-ghost">
-            Add Waste
-          </Link>
+
+          {role && role !== "seller" && (
+  <Link to="/marketplace" className="btn btn-ghost">
+    Marketplace    
+  </Link>
+)}
+         
           <button onClick={handleLogout} className="btn btn-outline btn-error">
             Logout
           </button>

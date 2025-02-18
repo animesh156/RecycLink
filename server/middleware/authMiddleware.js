@@ -32,4 +32,15 @@ const isSeller = async (req,res,next) => {
   next();
 }
 
-module.exports = { protect, isSeller };
+
+const isBuyer = async (req,res,next) => {
+    const user = await User.findById(req.user.id);
+  if (user.role !== "buyer") {
+    return res.status(403).json({ message: "Access Denied! Only buyers can perform this action." });
+  }
+  next();
+}
+
+
+
+module.exports = { protect, isSeller, isBuyer };
