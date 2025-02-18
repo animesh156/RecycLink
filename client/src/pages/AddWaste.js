@@ -20,7 +20,7 @@ const AddWaste = () => {
   useEffect(() => {
     if (UserRole !== "seller") {
       toast.error("Access Denied: Only sellers can add waste.");
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [navigate]);
 
@@ -82,7 +82,7 @@ const AddWaste = () => {
       if (response.status === 201) {
         toast.success("Waste added successfully!");
         setTimeout(() => {
-          navigate("/marketplace");  // Redirect after success
+          navigate("/");  // Redirect after success
           window.location.reload();  // Optionally reload page
         }, 2000);
       }
