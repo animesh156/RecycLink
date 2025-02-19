@@ -11,6 +11,7 @@ import AddWaste from './pages/AddWaste'
 import MarketPlace from './pages/Marketplace'
 import SellerDashboard from './pages/SellerDashBoard'
 import BuyersList from './pages/BuyersList'
+import WasteAnalyzer from './pages/WasteAnalyzer'
 
 import "./App.css";
 import RecyclingContribution from "./pages/RecyclingContribution";
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/buyers-list" element={<BuyersList />} />
         <Route path="/add-waste" element={<AddWaste />} />
         <Route path="/history" element={<PurchasedItems />} />
+        <Route path="/analyze" element={<WasteAnalyzer />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

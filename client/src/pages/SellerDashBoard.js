@@ -116,9 +116,9 @@ const SellerDashboard = () => {
           initial="hidden"
           animate="visible"
           variants={titleAnimation}
-          className="text-center text-4xl mb-16 text-blue-900 font-light tracking-wide relative z-10"
+          className="text-center md:text-4xl mb-6 text-blue-900 font-light tracking-wide relative mt-10 z-10"
         >
-          Welcome back, {' '}
+          Welcome, {' '}
           <motion.span 
             className="text-blue-600 font-bold uppercase"
             whileHover={{ scale: 1.05 }}
@@ -178,6 +178,28 @@ const SellerDashboard = () => {
               </div>
             </div>
           </motion.div>
+
+          <motion.div
+            variants={cardAnimation}
+            whileHover="hover"
+            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+          >
+            <div className="card-body p-8 flex flex-col h-full">
+              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Analyze Waste</h2>
+              <p className="text-gray-100 mb-6 text-lg text-center"> Get recycling suggestions based on the uploaded waste image.</p>
+              <div className="card-actions justify-center mt-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
+                  onClick={() => navigate('/analyze')}
+                >
+                  Analyse
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+
 
           <motion.div
             variants={cardAnimation}
