@@ -65,7 +65,7 @@ const Navbar = () => {
             className="flex-1"
           >
             <Link 
-              to="/" 
+              to="/dashboard" 
               className="text-2xl font-bold text-white hover:text-blue-200 transition-colors duration-200 flex items-center gap-2"
             >
               <span className="text-blue-300">Recyc</span>Link
@@ -79,7 +79,7 @@ const Navbar = () => {
             className="flex items-center gap-6"
           >
             <Link 
-              to="/" 
+              to="/dashboard" 
               className="relative px-4 py-2 text-white hover:text-blue-200 transition-all duration-200 rounded-lg hover:bg-white/10 group"
             >
               <span>Dashboard</span>

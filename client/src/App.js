@@ -12,7 +12,8 @@ import AddWaste from './pages/AddWaste'
 import MarketPlace from './pages/Marketplace'
 import SellerDashboard from './pages/SellerDashBoard'
 import BuyersList from './pages/BuyersList'
-import WasteAnalyzer from './pages/WasteAnalyzer'
+import ScrollToTop from './components/ScrollTotop'
+
 
 import "./App.css";
 import RecyclingContribution from "./pages/RecyclingContribution";
@@ -22,11 +23,11 @@ const App = () => {
   return (
     <Router>
       <Navbar />
-
+      <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/Home" element={<Home/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/add-waste" element={<AddWaste />} />
         <Route path="/marketplace" element={<MarketPlace />} />
         <Route path="/register" element={<Register />} />
@@ -36,7 +37,7 @@ const App = () => {
         <Route path="/buyers-list" element={<BuyersList />} />
         <Route path="/add-waste" element={<AddWaste />} />
         <Route path="/history" element={<PurchasedItems />} />
-        <Route path="/analyze" element={<WasteAnalyzer />} />
+      
         <Route path="*" element={<NotFound />} />
       </Routes>
 

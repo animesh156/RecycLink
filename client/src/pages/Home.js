@@ -1,27 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ToastContainer } from "react-toastify";
+
 
 const Home = () => {
   const navigate = useNavigate();
-  const userName = localStorage.getItem("userName");
-  const userRole = localStorage.getItem("role");
+ 
 
-  const handleDashboardClick = () => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
-
-    if (userRole === "buyer") {
-      navigate("/buyer-dashboard");
-    } else if (userRole === "seller") {
-      navigate("/seller-dashboard");
-    }
-  };
-
+  
   const values = [
     {
       title: "Sustainability",
@@ -56,7 +42,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className=" bg-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 w-full h-full opacity-5">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -74,32 +60,12 @@ const Home = () => {
         </svg>
       </div>
 
-      <ToastContainer />
-
-      {/* Modern Header */}
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 p-6"
-      >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-white">
-            <span className="text-blue-300">Recyc</span>Link
-          </h1>
-          <motion.button
-            onClick={handleDashboardClick}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-blue-600 px-6 py-2 rounded-lg text-white font-semibold hover:bg-blue-700 transition-all duration-200 shadow-lg"
-          >
-            Go to Dashboard
-          </motion.button>
-        </div>
-      </motion.header>
+     
+    
       
       <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Hero Section */}
-        <div className="flex flex-col md:flex-row items-center gap-12 mb-16">
+        <div className="flex flex-col mt-8 md:mt-0 md:flex-row items-center gap-12 mb-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -127,6 +93,22 @@ const Home = () => {
             <img src="/Hamsa.gif" className="w-full" alt="RecycLink Illustration" />
           </motion.div>
         </div>
+
+
+        <div className="flex justify-center mb-14">
+
+        <motion.button 
+  onClick={() => navigate('/login')}
+  className="bg-blue-600 text-white  px-6 py-3 rounded-lg shadow-lg mt-6"
+  animate={{ y: [0, -10, 0] }} 
+  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+>
+  Get Started
+</motion.button>
+
+        </div>
+        
+
 
         {/* Values Grid */}
         <motion.div

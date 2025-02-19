@@ -31,7 +31,7 @@ const Register = () => {
         localStorage.setItem("userName", response.data.name);
 
         setTimeout(() => {
-          navigate("/");
+          navigate("/dashboard");
           window.location.reload();
         }, 2000);
       }
