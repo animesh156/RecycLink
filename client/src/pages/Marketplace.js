@@ -59,7 +59,7 @@ function Marketplace() {
    
 
     return (
-        <div className="h-screen md:mt-14 bg-white mx-auto p-6">
+        <div className=" md:mt-14 bg-white mx-auto p-6">
             <ToastContainer />
             <motion.h2 
                 initial={{ opacity: 0, y: -20 }}
