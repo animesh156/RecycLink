@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const API = axios.create({
-    // baseURL: "http://localhost:6478/api",     // for development
-    baseURL: "https://recyclink.onrender.com/api",     // for production
+    baseURL: "http://localhost:6478/api",     // for development
+   
     withCredentials: true,
 });
 
