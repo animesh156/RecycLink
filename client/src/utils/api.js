@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-    baseURL: "http://localhost:6478/api",     // for development
+    baseURL: "https://recyc-link-backend.vercel.app/api",     // for development
     withCredentials: true,
 });
 

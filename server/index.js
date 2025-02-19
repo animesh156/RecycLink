@@ -17,10 +17,11 @@ connectDB();
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Adjust based on frontend URL
+    origin: ["http://localhost:3000", "https://recyc-link-beta.vercel.app"], // Array for multiple origins
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
