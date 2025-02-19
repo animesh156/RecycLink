@@ -61,7 +61,7 @@ function Marketplace() {
     if(isLoading) return <Loader />
 
     return (
-        <div className="min-h-screen bg-white mx-auto p-6">
+        <div className="h-screen bg-white mx-auto p-6">
             <ToastContainer />
             <motion.h2 
                 initial={{ opacity: 0, y: -20 }}
@@ -71,7 +71,7 @@ function Marketplace() {
                 Waste Marketplace
             </motion.h2>
             {wastes.length === 0 ? (
-                <p className="text-center font-semibold text-blue-900">No Items Available</p>
+                <p className="text-center text-3xl font-semibold text-blue-900">No Items Available</p>
             ) : (
                 <motion.div 
                     initial={{ opacity: 0 }}

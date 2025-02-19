@@ -1,8 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 
 const API = axios.create({
-    baseURL: "https://recyc-link-backend.vercel.app/api",     // for development
-    withCredentials: true,
+  baseURL: "https://recyc-link-backend.vercel.app/api", // for production
+
+  withCredentials: true,
 });
 
 export default API;
