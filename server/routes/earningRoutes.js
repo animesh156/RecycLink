@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require('mongoose')
 const User = require('../models/userModel')
-
+ 
 // Get seller monthly earnings
 router.get("/monthly-earning", async (req, res) => {
   try {
