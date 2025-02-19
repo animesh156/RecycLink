@@ -3,11 +3,13 @@ import API from '../utils/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Loader from '../components/Loader'
 
 function Marketplace() {
     const [wastes, setWastes] = useState([]);
     const navigate = useNavigate();
     const UserRole = localStorage.getItem("role");
+    const [isLoading, setLoading] = useState(false)
 
     useEffect(() => {
         if (UserRole === "seller") {
@@ -19,6 +21,7 @@ function Marketplace() {
     }, [UserRole, navigate]);
 
     useEffect(() => {
+        setLoading(true)
         const fetchWastes = async () => {
             try {
                 const response = await API.get('/waste', { withCredentials: true });
@@ -26,6 +29,8 @@ function Marketplace() {
             } catch (error) {
                 console.log(error);
                 toast.error("Failed to load waste items.");
+            } finally {
+                setLoading(false)
             }
         };
 
@@ -42,7 +47,7 @@ function Marketplace() {
         }
 
         try {
-            const response = await API.post(`/buyer/add/${wasteId}`, { bidAmount: amount }, { withCredentials: true });
+             await API.post(`/buyer/add/${wasteId}`, { bidAmount: amount }, { withCredentials: true });
             toast.success("Bid placed successfully!");
         } catch (error) {
             toast.error("There was an error placing your bid. Please try again.");
@@ -51,6 +56,9 @@ function Marketplace() {
     };
 
     if (UserRole === "seller") return null;
+
+
+    if(isLoading) return <Loader />
 
     return (
         <div className="min-h-screen bg-white mx-auto p-6">

@@ -65,7 +65,8 @@ const Home = () => {
       
       <main className="max-w-7xl mx-auto px-4 py-12">
         {/* Hero Section */}
-        <div className="flex flex-col mt-8 md:mt-0 md:flex-row items-center gap-12 mb-6">
+        <div className="flex flex-col-reverse md:flex-row mt-8 md:mt-0 items-center gap-12 mb-6">
+
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

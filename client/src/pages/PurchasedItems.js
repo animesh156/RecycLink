@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
 import API from "../utils/api";
+import Loader from "../components/Loader";
 
 function PurchasedItems() {
   const [purchasedItems, setPurchasedItems] = useState([]);
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     const fetchPurchasedItems = async () => {
       try {
         const response = await API.get("/buyer/history", { withCredentials: true });
         setPurchasedItems(response.data.purchasedItems);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false)
       }
     };
     fetchPurchasedItems();
   }, []);
+
+  if(isLoading) return <Loader />
 
   return (
     <div className="min-h-screen p-6 bg-white flex flex-col items-center justify-start">
