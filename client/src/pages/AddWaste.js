@@ -66,7 +66,7 @@ const AddWaste = () => {
       if (response.status === 201) {
         toast.success("Waste added successfully!");
         setTimeout(() => {
-          navigate("/");
+          navigate("/dashboard");
           window.location.reload();
         }, 2000);
       }
