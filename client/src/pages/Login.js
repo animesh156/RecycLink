@@ -25,7 +25,7 @@ const Login = () => {
         localStorage.setItem("userName", loginResponse.data.name);
 
         setTimeout(() => {
-          navigate("/");
+          navigate("/Home");
           window.location.reload();
         }, 2000);
       } else {

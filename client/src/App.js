@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Home from './pages/Home';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -24,6 +25,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/Home" element={<Home/>}/>
         <Route path="/add-waste" element={<AddWaste />} />
         <Route path="/marketplace" element={<MarketPlace />} />
         <Route path="/register" element={<Register />} />
