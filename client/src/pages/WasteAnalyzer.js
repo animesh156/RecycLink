@@ -46,7 +46,7 @@ const WasteAnalyzer = () => {
     formData.append("image", image);
 
     try {
-      const response = await axios.post("http://localhost:6478/api/analyze", formData, {
+      const response = await axios.post("https://recyclink.onrender.com/api/analyze", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
