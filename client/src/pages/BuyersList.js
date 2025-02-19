@@ -6,19 +6,17 @@ import Loader from '../components/Loader'
 
 const BuyersList = () => {
   const [buyersData, setBuyersData] = useState([]);
-  const [isLoading, setLoading] = useState(false)
+  
 
   useEffect(() => {
-    setLoading(true)
+   
     const fetchBuyersList = async () => {
       try {
         const response = await API.get("/buyer/list", { withCredentials: true });
         setBuyersData(response.data);
       } catch (error) {
         console.log(error);
-      } finally {
-        setLoading(false)
-      }
+      } 
     };
 
     fetchBuyersList();
@@ -72,7 +70,7 @@ const BuyersList = () => {
     }
   };
 
-  if(isLoading) return <Loader />
+  
   return (
     <div className="min-h-screen bg-white p-6 relative">
       <div className="absolute inset-0 w-full h-full opacity-5">

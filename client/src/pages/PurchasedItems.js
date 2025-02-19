@@ -1,27 +1,22 @@
 import { useEffect, useState } from "react";
 import API from "../utils/api";
-import Loader from "../components/Loader";
 
 function PurchasedItems() {
   const [purchasedItems, setPurchasedItems] = useState([]);
-  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
     const fetchPurchasedItems = async () => {
       try {
-        const response = await API.get("/buyer/history", { withCredentials: true });
+        const response = await API.get("/buyer/history", {
+          withCredentials: true,
+        });
         setPurchasedItems(response.data.purchasedItems);
       } catch (error) {
         console.log(error);
-      } finally {
-        setLoading(false)
       }
     };
     fetchPurchasedItems();
   }, []);
-
-  if(isLoading) return <Loader />
 
   return (
     <div className="min-h-screen p-6 bg-white flex flex-col items-center justify-start">
@@ -55,10 +50,11 @@ function PurchasedItems() {
                     </h2>
                     <div className="flex justify-center gap-8 text-sm">
                       <p className="text-blue-800">
-                        Price: <span className="font-semibold">${item.price}</span>
+                        Price:{" "}
+                        <span className="font-semibold">${item.price}</span>
                       </p>
                       <p className="text-blue-800">
-                        Purchased: {" "}
+                        Purchased:{" "}
                         <span className="font-semibold">
                           {new Date(item.datePurchased).toLocaleDateString()}
                         </span>

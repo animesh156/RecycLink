@@ -3,13 +3,13 @@ import API from '../utils/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Loader from '../components/Loader'
+
 
 function Marketplace() {
     const [wastes, setWastes] = useState([]);
     const navigate = useNavigate();
     const UserRole = localStorage.getItem("role");
-    const [isLoading, setLoading] = useState(false)
+    
 
     useEffect(() => {
         if (UserRole === "seller") {
@@ -21,7 +21,7 @@ function Marketplace() {
     }, [UserRole, navigate]);
 
     useEffect(() => {
-        setLoading(true)
+       
         const fetchWastes = async () => {
             try {
                 const response = await API.get('/waste', { withCredentials: true });
@@ -29,9 +29,7 @@ function Marketplace() {
             } catch (error) {
                 console.log(error);
                 toast.error("Failed to load waste items.");
-            } finally {
-                setLoading(false)
-            }
+            } 
         };
 
         if (UserRole === "buyer") {
@@ -58,7 +56,7 @@ function Marketplace() {
     if (UserRole === "seller") return null;
 
 
-    if(isLoading) return <Loader />
+   
 
     return (
         <div className="h-screen md:mt-14 bg-white mx-auto p-6">
