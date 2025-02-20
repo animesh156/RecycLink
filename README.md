@@ -28,6 +28,11 @@ RecycLink is a full-stack web application that connects waste producers with buy
 - JWT-based authentication.
 - Users can log in, register, and manage their profiles.
 - Role-based access control (only sellers can add waste).
+
+### 6️⃣ AI Based Waste Analysis
+- Users can upload waste images for AI-powered analysis.
+- The system provides recycling suggestions based on detected waste types.
+- Uses TensorFlow.js and COCO-SSD for object detection.
 ## Tech Stack
 
 **Frontend:** React, TailwindCSS, DaisyUI, Chart.js, Cloudinary
