@@ -19,7 +19,10 @@ const Login = () => {
       );
 
       if (loginResponse.status === 200) {
-        toast.success("Login successful!");
+      toast.success("Login successful!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("role", loginResponse.data.role);
         localStorage.setItem("userName", loginResponse.data.name);
@@ -29,10 +32,16 @@ const Login = () => {
           window.location.reload();
         }, 2000);
       } else {
-        toast.error("Login failed. Please try again.");
+      toast.error("Login failed. Please try again.", {
+        position: "top-center",
+        autoClose: 4000,
+      });
       }
     } catch (err) {
-      toast.error("Login failed. Please check your credentials.");
+      toast.error("Login failed. Please check your credentials.", {
+        position: "top-center",
+        autoClose: 4000,
+      });
       console.error("Login error:", err);
     }
   };

@@ -13,6 +13,7 @@ import MarketPlace from './pages/Marketplace'
 import SellerDashboard from './pages/SellerDashBoard'
 import BuyersList from './pages/BuyersList'
 import ScrollToTop from './components/ScrollTotop'
+import WasteImageAnalyzer from './pages/WasteAnalyzer'
 
 
 import "./App.css";
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/buyers-list" element={<BuyersList />} />
         <Route path="/add-waste" element={<AddWaste />} />
         <Route path="/history" element={<PurchasedItems />} />
+        <Route path="/analyze" element={<WasteImageAnalyzer />} />
       
         <Route path="*" element={<NotFound />} />
       </Routes>

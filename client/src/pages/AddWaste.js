@@ -20,7 +20,10 @@ const AddWaste = () => {
 
   useEffect(() => {
     if (UserRole !== "seller") {
-      toast.error("Access Denied: Only sellers can add waste.");
+      toast.error("Access Denied: Only sellers can add waste.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
       navigate("/");
     }
   }, [navigate]);
@@ -29,7 +32,10 @@ const AddWaste = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 200 * 1024) {
-        toast.error("Image size must be less than 200 KB");
+        toast.error("Image size must be less than 200 KB", {
+          position: "top-center",
+          autoClose: 5000,
+        });
         setFormData({ ...formData, image: null });
       } else {
         setFormData({ ...formData, image: file });
@@ -41,7 +47,10 @@ const AddWaste = () => {
     e.preventDefault();
   
     if (!formData.image) {
-      toast.error("Please upload an image.");
+      toast.error("Please upload an image.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
       return;
     }
   
@@ -64,14 +73,20 @@ const AddWaste = () => {
       );
   
       if (response.status === 201) {
-        toast.success("Waste added successfully!");
+        toast.success("Waste added successfully!", {
+          position: "top-center",
+          autoClose: 5000,
+        });
         setTimeout(() => {
           navigate("/dashboard");
           window.location.reload();
         }, 2000);
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to add waste.");
+      toast.error(err.response?.data?.message || "Failed to add waste.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
       console.error("Error:", err);
     }
   };

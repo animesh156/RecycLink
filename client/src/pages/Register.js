@@ -25,7 +25,10 @@ const Register = () => {
       );
 
       if (response.status === 201) {
-        toast.success("Registered Successfully");
+      toast.success("Registered Successfully", {
+        position: "top-center",
+        autoClose: 3000,
+      });
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("role", response.data.role);
         localStorage.setItem("userName", response.data.name);
@@ -37,9 +40,15 @@ const Register = () => {
       }
     } catch (err) {
       if (err.response?.status === 400) {
-        toast.error("Email is already registered");
+        toast.error("Email is already registered",{
+          position: "top-center",
+          autoClose: 4000,
+        });
       } else {
-        toast.error("Registration failed. Please try again.");
+        toast.error("Registration failed. Please try again.", {
+          position: "top-center",
+          autoClose: 4000,
+        });
       }
       console.error("Registration error:", err);
     }
@@ -69,39 +78,39 @@ const Register = () => {
       <div className="flex flex-col md:flex-row items-center gap-8 px-4">
         {/* IRA Design Illustration Container */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="md:w-96"
-        >
-          <div className="relative">
-            <img src="/Good team-cuate.svg"  className="w-200 h-96" />
-            <a 
-              href="https://iradesign.io" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-sm text-blue-500 hover:text-blue-600 absolute bottom-0 left-0 bg-white/80 px-2 py-1 rounded-tr-lg"
-            >
-              
-            </a>
-          </div>
-        </motion.div>
+  initial={{ opacity: 0, x: -20 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.5 }}
+  className="md:w-96 hidden md:block"
+>
+  <div className="relative">
+    <img src="/Good team-cuate.svg" className="w-200 h-96" />
+    <a 
+      href="https://iradesign.io" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="text-sm text-blue-500 hover:text-blue-600 absolute bottom-0 left-0 bg-white/80 px-2 py-1 rounded-tr-lg"
+    >
+    </a>
+  </div>
+</motion.div>
+
 
         {/* Register Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 rounded-xl shadow-2xl p-8 relative z-10 border border-blue-300/30"
+          className="max-w-xl w-full  bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 rounded-xl shadow-2xl p-5 relative z-10 border border-blue-300/30"
         >
           <motion.h1 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-4xl font-bold mb-8 text-center text-white"
+            className="md:text-4xl text-2xl font-bold mb-3 text-center text-white"
           >
             Join <span className="text-blue-300">Recyc</span>Link
           </motion.h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}

@@ -10,6 +10,7 @@ const wasteRoutes = require("./routes/wasteRoutes");
 const buyersRoutes = require("./routes/buyersRoutes");
 const earningRoutes = require("./routes/earningRoutes");
 
+
 const { protect } = require("./middleware/authMiddleware");
 
 connectDB();
@@ -29,6 +30,7 @@ app.use("/api/user", userRoutes); // user route /user/register or login
 app.use("/api/waste", wasteRoutes);
 app.use("/api/buyer", protect, buyersRoutes);
 app.use("/api", protect, earningRoutes);
+
 
 
 app.listen(port, () => {
