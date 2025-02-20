@@ -117,7 +117,7 @@ const IncomeChart = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-4 border border-blue-100"
+      className="w-full max-w-3xl mx-auto bg-slate-100 dark:bg-neutral-950 rounded-xl shadow-lg p-4 border border-blue-100"
     >
       {chartData.labels.length > 0 ? (
         <>

@@ -112,14 +112,14 @@ function BuyerDashBoard() {
 
   return (
     <AnimatePresence>
-      <div className="min-h-screen bg-white p-6 relative overflow-hidden flex flex-col justify-center">
+      <div className="md:h-screen mt-14 p-6 relative overflow-hidden flex flex-col md:mt-6 justify-center">
         <AnimatedBackground />
         
         <motion.h1 
           initial="hidden"
           animate="visible"
           variants={titleAnimation}
-          className="text-center text-4xl mb-16 text-blue-900 font-light tracking-wide relative z-10"
+          className="text-center md:text-4xl text-3xl mb-12 text-blue-900 font-light tracking-wide relative z-10"
         >
           Welcome back, {' '}
           <motion.span 

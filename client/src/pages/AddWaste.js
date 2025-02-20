@@ -94,7 +94,7 @@ const AddWaste = () => {
   if (UserRole !== "seller") return null;
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6 relative">
+    <div className="mt-12 flex items-center justify-center p-6 relative">
       <div className="absolute inset-0 w-full h-full opacity-5">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -116,17 +116,17 @@ const AddWaste = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-2xl bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 rounded-2xl shadow-2xl p-8 relative z-10 border border-blue-300/30"
+        className="w-full max-w-2xl bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 rounded-2xl shadow-2xl p-6 mt-2 relative z-10 border border-blue-300/30"
       >
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-3xl font-bold text-center text-white mb-8"
+          className="text-3xl font-bold text-center text-white mb-3"
         >
           Add New Item
         </motion.h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-blue-200 text-lg mb-2 font-medium">
               Title
