@@ -3,12 +3,14 @@ import API from '../utils/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Loader from '../components/Loader'
 
 
 function Marketplace() {
     const [wastes, setWastes] = useState([]);
     const navigate = useNavigate();
     const UserRole = localStorage.getItem("role");
+    const [isLoading, setIsLoading] = useState(false)
     
 
     useEffect(() => {
@@ -21,7 +23,7 @@ function Marketplace() {
     }, [UserRole, navigate]);
 
     useEffect(() => {
-       
+       setIsLoading(true)
         const fetchWastes = async () => {
             try {
                 const response = await API.get('/waste', { withCredentials: true });
@@ -29,7 +31,9 @@ function Marketplace() {
             } catch (error) {
                 console.log(error);
                 toast.error("Failed to load waste items.");
-            } 
+            } finally {
+                setIsLoading(false)
+            }
         };
 
         if (UserRole === "buyer") {
@@ -57,9 +61,11 @@ function Marketplace() {
 
 
    
+     if(isLoading) return <Loader />
 
     return (
-        <div className=" md:mt-14 bg-white mx-auto p-6">
+        <div className="md:mt-14 mt-14  mx-auto p-6">
+            
             <ToastContainer />
             <motion.h2 
                 initial={{ opacity: 0, y: -20 }}
@@ -82,7 +88,7 @@ function Marketplace() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             whileHover={{ scale: 1.02 }}
-                            className="card bg-white w-96 shadow-xl border border-blue-100 rounded-xl overflow-hidden"
+                            className="card bg-white dark:bg-neutral-950 w-96 shadow-xl border border-blue-100 rounded-xl overflow-hidden"
                         >
                             <img 
                                 src={waste.imageUrl} 

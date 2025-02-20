@@ -89,13 +89,13 @@ const WasteImageAnalyzer = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="h-screen">
 
       <ToastContainer />
 
 <div className=" flex flex-col items-center p-6">
       
-      <h1 className="md:text-3xl text-lg font-bold mt-12 text-gray-800 mb-4">Waste Image Analysis</h1>
+      <h1 className="md:text-3xl text-xl font-bold mt-28 text-sky-700 mb-4">Waste Image Analysis</h1>
 
       <label className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md">
         Upload Image
@@ -133,7 +133,7 @@ const WasteImageAnalyzer = () => {
         <div className="mt-4 w-full max-w-md">
           {objects.length > 0 ? (
             <>
-              <h2 className="text-xl font-semibold text-gray-700 mb-3">Detected Waste:</h2>
+              <h2 className="text-xl font-semibold text-gray-700 dark:text-sky-700 mb-3">Detected Waste:</h2>
               <div className="grid gap-4">
                 {objects.map((obj, index) => (
                   <div key={index} className="bg-sky-200 p-4 shadow-md rounded-lg border-l-4 border-green-500">

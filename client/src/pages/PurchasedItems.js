@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import API from "../utils/api";
+import Loader from '../components/Loader'
 
 function PurchasedItems() {
   const [purchasedItems, setPurchasedItems] = useState([]);
+  const [isLoading,setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
     const fetchPurchasedItems = async () => {
       try {
         const response = await API.get("/buyer/history", {
@@ -13,13 +16,17 @@ function PurchasedItems() {
         setPurchasedItems(response.data.purchasedItems);
       } catch (error) {
         console.log(error);
+      } finally{
+        setIsLoading(false)
       }
     };
     fetchPurchasedItems();
   }, []);
 
   return (
-    <div className="min-h-screen p-6 bg-white flex flex-col items-center justify-start">
+    <div className=" h-screen">
+
+    {isLoading ? <Loader /> : <div className=" mt-20  flex flex-col  ">
       {purchasedItems.length === 0 ? (
         <p className="text-center text-2xl text-blue-900 mt-10">
           No Items available to display
@@ -29,7 +36,7 @@ function PurchasedItems() {
           <h1 className="text-center text-3xl font-bold mb-6 text-blue-900">
             Your Purchase History
           </h1>
-          <div className="w-full max-w-4xl mx-auto h-[calc(100vh-200px)] overflow-y-auto bg-white shadow-xl rounded-lg p-6">
+          <div className="w-full max-w-4xl mx-auto h-[calc(100vh-200px)] overflow-y-auto bg-white dark:bg-neutral-950 shadow-xl rounded-lg p-6">
             <ul className="space-y-4">
               {purchasedItems.map((item, index) => (
                 <li
@@ -67,7 +74,12 @@ function PurchasedItems() {
           </div>
         </>
       )}
+    </div>}
+
+
+
     </div>
+  
   );
 }
 

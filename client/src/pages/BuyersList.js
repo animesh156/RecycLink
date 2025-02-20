@@ -72,7 +72,7 @@ const BuyersList = () => {
 
   
   return (
-    <div className="min-h-screen bg-white p-6 relative">
+    <div className="min-h-screen p-6 relative">
       <div className="absolute inset-0 w-full h-full opacity-5">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>

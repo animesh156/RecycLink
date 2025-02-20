@@ -109,7 +109,7 @@ const SellerDashboard = () => {
 
   return (
     <AnimatePresence>
-      <div className="min-h-screen bg-white p-6 relative overflow-hidden flex flex-col justify-center">
+      <div className="min-h-screen  p-6 relative overflow-hidden flex flex-col justify-center">
         <AnimatedBackground />
         
         <motion.h1 

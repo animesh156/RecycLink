@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../utils/api";
 import { toast, ToastContainer } from "react-toastify";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+import { IoMenu } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const authStatus = localStorage.getItem("isAuthenticated") === "true";
@@ -28,9 +32,9 @@ const Navbar = () => {
       localStorage.removeItem("isAuthenticated");
       localStorage.removeItem("role");
       localStorage.removeItem("userName");
-      
+
       setTimeout(() => {
-        navigate("/login");
+        navigate("/");
         window.location.reload();
       }, 2000);
     } catch (error) {
@@ -42,7 +46,7 @@ const Navbar = () => {
   const role = localStorage.getItem("role");
 
   if (!isAuthenticated) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -58,6 +62,7 @@ const Navbar = () => {
       <ToastContainer />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -72,12 +77,8 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-6"
-          >
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
             <Link 
               to="/dashboard" 
               className="relative px-4 py-2 text-white hover:text-blue-200 transition-all duration-200 rounded-lg hover:bg-white/10 group"
@@ -110,11 +111,60 @@ const Navbar = () => {
             >
               Logout
             </motion.button>
-          </motion.div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <IoClose size={28} /> : <IoMenu size={28} />}
+          </button>
         </div>
       </div>
 
-      {/* Enhanced bottom border with animation */}
+      {/* Mobile Navigation Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-blue-900 text-white px-4 py-3 space-y-3 shadow-lg"
+          >
+            <Link 
+              to="/dashboard" 
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-4 py-2 hover:bg-white/10 rounded-lg"
+            >
+              Dashboard
+            </Link>
+
+            {role && role !== "seller" && (
+              <Link 
+                to="/marketplace" 
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-2 hover:bg-white/10 rounded-lg"
+              >
+                Marketplace
+              </Link>
+            )}
+
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                handleLogout();
+              }}
+              className="w-full text-left px-4 py-2 bg-white/10 rounded-lg border border-white/20 hover:border-white/40"
+            >
+              Logout
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Enhanced bottom border animation */}
       <motion.div 
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}

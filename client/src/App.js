@@ -23,8 +23,9 @@ import PurchasedItems from "./pages/PurchasedItems";
 const App = () => {
   return (
     <Router>
+        <ScrollToTop />
       <Navbar />
-      <ScrollToTop />
+    
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
