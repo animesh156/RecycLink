@@ -131,82 +131,77 @@ function BuyerDashBoard() {
         </motion.h1>
 
         <motion.div 
-          variants={containerAnimation}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-wrap gap-8 justify-center items-center max-w-7xl mx-auto relative z-10"
+  variants={containerAnimation}
+  initial="hidden"
+  animate="visible"
+  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center items-center max-w-7xl mx-auto relative z-10"
+>
+  <motion.div
+    variants={cardAnimation}
+    whileHover="hover"
+    className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-full md:w-96 h-64 sm:h-72 shadow-xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+  >
+    <div className="card-body p-6 flex flex-col h-full">
+      <h2 className="card-title text-blue-300 text-lg md:text-xl font-bold text-center">Purchased Items</h2>
+      <p className="text-gray-100 text-sm md:text-lg text-center">Track and manage your recycling journey</p>
+      <div className="card-actions justify-center mt-auto">
+        <motion.button
+          whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+          whileTap={{ scale: 0.95 }}
+          className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-6 py-2 rounded-lg shadow-lg text-sm md:text-base"
+          onClick={() => navigate('/history')}
         >
-          <motion.div
-            variants={cardAnimation}
-            whileHover="hover"
-            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
-          >
-            <div className="card-body p-8 flex flex-col h-full">
-              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Purchased Items</h2>
-              <p className="text-gray-100 mb-6 text-lg text-center">Track and manage your recycling journey</p>
-              <div className="card-actions justify-center mt-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
-                  onClick={() => navigate('/history')}
-                >
-                  View History
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
+          View History
+        </motion.button>
+      </div>
+    </div>
+  </motion.div>
 
-          <motion.div
-            variants={cardAnimation}
-            whileHover="hover"
-            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
-          >
-            <div className="card-body p-8 flex flex-col h-full">
-              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Analyze Waste</h2>
-              <p className="text-gray-100 mb-6 text-lg text-center">Get recycling recommendations based on waste</p>
-              <div className="card-actions justify-center mt-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
-                  onClick={() => navigate('/analyze')}
-                >
-                  Analyze
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
+  <motion.div
+    variants={cardAnimation}
+    whileHover="hover"
+    className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-full md:w-96 h-64 sm:h-72 shadow-xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+  >
+    <div className="card-body p-6 flex flex-col h-full">
+      <h2 className="card-title text-blue-300 text-lg md:text-xl font-bold text-center">Analyze Waste</h2>
+      <p className="text-gray-100 text-sm md:text-lg text-center">Get recycling recommendations based on waste</p>
+      <div className="card-actions justify-center mt-auto">
+        <motion.button
+          whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+          whileTap={{ scale: 0.95 }}
+          className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-6 py-2 rounded-lg shadow-lg text-sm md:text-base"
+          onClick={() => navigate('/analyze')}
+        >
+          Analyze
+        </motion.button>
+      </div>
+    </div>
+  </motion.div>
 
-          <motion.div
-            variants={cardAnimation}
-            whileHover="hover"
-            className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-96 h-72 shadow-2xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
-          >
-            <div className="card-body p-8 flex flex-col h-full">
-              <h2 className="card-title text-blue-300 text-2xl mb-4 font-bold text-center">Recycle Insights</h2>
-              <p className="text-gray-100 mb-6 text-lg text-center">Discover your environmental impact</p>
-              <div className="card-actions justify-center mt-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-8 py-3 rounded-lg shadow-lg"
-                  onClick={() => navigate('/recycle-insights', { 
-                    state: { totalEarnings, recycledAmount } 
-                  })}
-                >
-                  View Insights
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
-
-
-        
-
-
-
-        </motion.div>
+  <motion.div
+    variants={cardAnimation}
+    whileHover="hover"
+    className="card bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-full md:w-96 h-64 sm:h-72 shadow-xl border border-blue-300/30 rounded-xl overflow-hidden flex flex-col"
+  >
+    <div className="card-body p-6 flex flex-col h-full">
+      <h2 className="card-title text-blue-300 text-lg md:text-xl font-bold text-center">Recycle Insights</h2>
+      <p className="text-gray-100 text-sm md:text-lg text-center">Discover your environmental impact</p>
+      <div className="card-actions justify-center mt-auto">
+        <motion.button
+          whileHover={{ scale: 1.05, backgroundColor: '#2563EB' }}
+          whileTap={{ scale: 0.95 }}
+          className="btn bg-blue-600 text-white hover:bg-blue-700 border-none px-6 py-2 rounded-lg shadow-lg text-sm md:text-base"
+          onClick={() => navigate('/recycle-insights', { 
+            state: { totalEarnings, recycledAmount } 
+          })}
+        >
+          View Insights
+        </motion.button>
+      </div>
+    </div>
+  </motion.div>
+</motion.div>
+ 
       </div>
     </AnimatePresence>
   );
