@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   
-  baseURL: "https://recyc-link-backend.vercel.app/api", // for production
+  baseURL: "https://recyclink-backend.onrender.com/api", // for production
 
   // baseURL: "http://localhost:6478/api", // for development
 
